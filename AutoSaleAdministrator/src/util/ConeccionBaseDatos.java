@@ -67,7 +67,7 @@ public class ConeccionBaseDatos {
                 nombre1 = leer2.getString("nombre");
 	        matricula1 = leer2.getString("matricula");
                 Cliente cliente = new Cliente(cedula1, nombre1);
-                gestion(cliente, matricula1);
+                Gestion(cliente, matricula1);
                 clientes.add(cliente);
 	        System.out.println(cedula1 + " " + nombre1 + " " + matricula1);
 	    }
@@ -84,7 +84,7 @@ public class ConeccionBaseDatos {
         }  
     }
 
-    private static void gestion(Cliente cliente, String matricula1) {
+    private static void Gestion(Cliente cliente, String matricula1) {
         for(int i = 0; i<vehiculos.size(); i++){
             if(vehiculos !=null && vehiculos.get(i).getMatricula().equals(matricula1)){
                 Registro registro = new Registro(cliente, vehiculos.get(i));
