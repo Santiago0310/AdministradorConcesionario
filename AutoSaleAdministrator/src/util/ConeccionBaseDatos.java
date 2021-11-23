@@ -67,7 +67,7 @@ public class ConeccionBaseDatos {
                 nombre1 = leer2.getString("nombre");
 	        matricula1 = leer2.getString("matricula");
                 Cliente cliente = new Cliente(cedula1, nombre1);
-                Gestion(cliente, matricula1);
+                gestion(cliente, matricula1);
                 clientes.add(cliente);
 	        System.out.println(cedula1 + " " + nombre1 + " " + matricula1);
 	    }
@@ -84,14 +84,51 @@ public class ConeccionBaseDatos {
         }  
     }
 
-    private static void Gestion(Cliente cliente, String matricula1) {
+    private static void gestion(Cliente cliente, String matricula1) {
         for(int i = 0; i<vehiculos.size(); i++){
             if(vehiculos !=null && vehiculos.get(i).getMatricula().equals(matricula1)){
                 Registro registro = new Registro(cliente, vehiculos.get(i));
                 venta.agregarVenta(registro);
+                venta.gananciasGeneradas += vehiculos.get(i).getPrecioVenta();
                 vehiculos.remove(i);
             }
         }
+    }
+    
+    public static void AgregarVehiculo(Vehiculo v){
+        Connection connection ;
+        try{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection ("jdbc:mysql://localhost:3306/basedatosautosale", "root", "0310");
+        Statement statement = connection.createStatement();    
+        statement.executeUpdate("INSERT INTO vehiculos(matricula, marca, color, numPuertas, tipoVehiculo, precioCompra, precioVenta)"+"VALUES('"+v.getMatricula()+"', '"+v.getMarca()+"', '"+v.getColor()+"', "+v.getNumPuertas()+", '"+v.getTipoVehiculo()+"', "+v.getPrecioCompra()+", "+v.getPrecioVenta()+")");
+        statement.close(); //Cerrando statement
+	connection.close(); //Cerrando connection
+        }catch(SQLException e ){
+            System.out.println("Error en MySQL");
+        }catch(ClassNotFoundException e ){
+            e.printStackTrace();
+        }catch(Exception e ){
+            System.out.println("Se ha encontrado el siguiente error: "+e.getMessage());
+        } 
+    }
+    
+    public static void AgregarCliente(Cliente c, Vehiculo v) {
+        Connection connection ;
+        try{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection ("jdbc:mysql://localhost:3306/basedatosautosale", "root", "0310");
+        Statement statement = connection.createStatement();    
+        statement.executeUpdate("INSERT INTO clientes(cedula, nombre, matricula)"+"VALUES("+c.getCedula()+", '"+c.getNombre()+"','"+v.getMatricula()+"')");
+        statement.close(); //Cerrando statement
+	connection.close(); //Cerrando connection
+        }catch(SQLException e ){
+            System.out.println("Error en MySQL");
+        }catch(ClassNotFoundException e ){
+            e.printStackTrace();
+        }catch(Exception e ){
+            System.out.println("Se ha encontrado el siguiente error: "+e.getMessage());
+        } 
     }
 
     public static DepVenta getVenta() {
@@ -109,6 +146,8 @@ public class ConeccionBaseDatos {
     public static void setAlmacen(Almacen almacen) {
         ConeccionBaseDatos.almacen = almacen;
     }
+
+    
     
     
 

@@ -16,10 +16,12 @@ public class Almacen {
     private ArrayList<Vehiculo> vehiculosComprados;
 
     public Almacen() {
-        this.vehiculosComprados = new ArrayList();
+        if(this.vehiculosComprados == null){
+            this.vehiculosComprados = new ArrayList();
+        }
     }
 
-    public ArrayList<Vehiculo> mostrarVehiculos() {
+    public ArrayList<Vehiculo> getVehiculosComprados() {
         return vehiculosComprados;
     }
 
@@ -52,10 +54,21 @@ public class Almacen {
             return null;
         }
         for (Vehiculo vehiculo1 : vehiculosComprados){
-            if(vehiculo1.getMatricula() == matricula){
+            if(vehiculo1.getMatricula().equals(matricula)){
                 return vehiculo1;
             }
         }
         return null;
+    }
+    public boolean buscarVehiculoMatricula(String matricula){
+        if(matricula == null){
+            return false;
+        }
+        for (Vehiculo vehiculo1 : vehiculosComprados){
+            if(vehiculo1.getMatricula().equals(matricula)){
+                return true;
+            }
+        }
+        return false;
     }
 }

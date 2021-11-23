@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class DepVenta {
     
     private ArrayList<Registro> registros;
-    private Long gananciasGeneradas;
+    public Long gananciasGeneradas = 0L;
     
     public DepVenta() {
         if(this.registros == null){
